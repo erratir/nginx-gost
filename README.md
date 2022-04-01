@@ -41,3 +41,52 @@ sudo dpkg -i lsb-cprocsp-kc2-64_4.0.0-5_amd64.deb
 Выбор имени для сертификатов (по умолчанию "srvtest.pem" для GOST и "srvtestRSA.pem" для RSA).
 - **\-\-container=NAME**  
 Выбор контейнера для GOST сертификата (по умолчанию "ngxtest").
+
+## Пакеты для сборки в Centos7
+
+```shell
+sudo yum -y install cmake3 wget curl unzip yum-utils gcc
+```
+
+```shell
+sudo yum install -y epel-release
+```
+или
+```shell
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo yum install -y epel-release-latest-7.noarch.rpm
+```
+--
+
+```shell
+sudo yum -y groupinstall "Development Tools"
+```
+```shell
+sudo yum -y install lsb
+```
+
+## Пакеты для сборки в ROSA FRESH
+
+```shell
+sudo yum -y install abf
+```
+
+```shell
+sudo yum -y install gcc-c++
+```
+
+```shell
+sudo yum -y install lsb
+```
+
+## Пакеты для сборки в ROSA COBALT (ФСТЭК)
+
+```shell
+sudo yum -y install gcc-c++
+```
+
+```shell
+sudo yum install lsb-core* 
+или 
+sudo yum install redhat-lsb-core*
+```

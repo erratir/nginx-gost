@@ -15,8 +15,8 @@ zlib_ver="zlib-1.2.11"
 nginx_branch="stable-1.16"
 
 # Определение команд под систему
-cat /etc/*release* | grep -Ei "(centos|red hat)" > /dev/null
-if [ "$?" -eq 0 ] 
+cat /etc/*release* | grep -Ei "(centos|red hat|rosa)" > /dev/null
+if [ "$?" -eq 0 ]
 then
     apt="yum -y"
     pkgmsys="rpm"
@@ -28,11 +28,11 @@ then
     cprocsp-cpopenssl-110-gost-64-${release_openssl}.x86_64.rpm)
 
     modules_path=/usr/lib64/nginx/modules
-    cc_ld_opt=" --with-cc-opt='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic -fPIC' --with-ld-opt='-Wl,-z,relro -Wl,-z,now -pie'" 
+    cc_ld_opt=" --with-cc-opt='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic -fPIC' --with-ld-opt='-Wl,-z,relro -Wl,-z,now -pie'"
 
 else
     cat /etc/*release* | grep -Ei "(ubuntu|debian)" > /dev/null
-    if [ "$?" -eq 0 ] 
+    if [ "$?" -eq 0 ]
     then
         apt="apt-get"
         pkgmsys="deb"
@@ -119,7 +119,7 @@ do
                 if test "${define}" == "git"
                 then
                     git_need=true
-                    
+
                 # gcc
                 elif test "${define}" == "gcc"
                 then
@@ -149,7 +149,7 @@ do
                 elif test "${define}" == "nginx"
                 then
                     nginx_need=true
-                
+
                 else
                     echo "Bad value for \"${term}\": ${define}"
                     exit 1
@@ -160,7 +160,7 @@ do
                 if test "${define}" == "git"
                 then
                     git_need=false
-                    
+
                 # gcc
                 elif test "${define}" == "gcc"
                 then
@@ -175,7 +175,7 @@ do
                 elif test "${define}" == "pcre"
                 then
                     pcre_need=false
-                
+
                 else
                     echo "Bad value for \"${term}\": ${define}"
                     exit 1
@@ -212,7 +212,7 @@ do
     # Не верные аргументы
     else
         echo "Bad arg: ${arg_cur}"
-        exit 1 
+        exit 1
     fi
 done
 
@@ -430,8 +430,8 @@ then
     _exec "wget --no-check-certificate -O ${zlib_ver}.tar.gz ${url}/src/${zlib_ver}.tar.gz"
 fi
 
-for openssl_pkg in "${openssl_packages[@]}"; 
-do 
+for openssl_pkg in "${openssl_packages[@]}";
+do
     if ! [ -e "$openssl_pkg" ]
     then
         _exec "wget --no-check-certificate -O $openssl_pkg ${url}/bin/${revision_openssl}/$openssl_pkg"
@@ -489,7 +489,7 @@ fi
 
 if [ ${zlib_need} == true ];
 then
-    _echo "Install ZLIB" 
+    _echo "Install ZLIB"
     _exec "cd ${zlib_ver} && ./configure && make && make install && cd ${WORK_PATH}"
 fi
 
@@ -527,7 +527,7 @@ then
     then
         _exec "git apply nginx_conf.patch"
     fi
-    
+
     cmd="./auto/configure${nginx_paths}${nginx_parametrs}${cc_ld_opt}"
     _echo "Nginx: configure and install"
     _exec "${cmd} && make && make install"
